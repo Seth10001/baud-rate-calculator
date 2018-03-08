@@ -1,70 +1,129 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+		<script src="baud.js"></script>
 	</head>
 
 	<body>
 
-		<h1>Baud Rate Calculator</h1>
+		<h1 class = "text-center">Baud Rate Calculator</h1>
 
 		<div class = "container">
 			<div class = "row">
 
-				<label>CPU Clock (MHz)</label>
-				<input type = "number" />
+				<div class = "input-group mb-3">
+					<div class = "input-group-prepend">
+    				<span class = "input-group-text">CPU Clock (MHz)</span>
+  				</div>
 
-				<br />
-				<br />
+					<input type = "number" class = "form-control" value = "32" id = "clock-rate"/>
+				</div>
 
-				<label>Baud rate (bps)</label>
-				<input type = "number" />
 
-				<br />
-				<br />
+				<div class = "input-group mb-3">
+					<div class = "input-group-prepend">
+						<span class = "input-group-text">Baud rate (bps)</span>
+					</div>
 
-				<label>Normal/Double speed mode</label>
-				<select>
-					<option>Normal (0)</option>
-					<option>Double (1)</option>
-				</select>
+					<input type = "number" class = "form-control" value = "128000" id = "baud-rate"/>
+				</div>
+
+				<div class = "input-group mb-3">
+					<div class = "input-group-prepend">
+						<span class = "input-group-text">Normal/Double speed mode</span>
+					</div>
+					<select class = "form-control" id = "speed-mode">
+						<option value = "0" selected >Normal (0)</option>
+						<optio value = "1" >Double (1)</option>
+					</select>
+				</div>
+
 			</div>
 
-			<div class = "row">
-				<div>
-						BSCALE value
-				</div>
+			<table class = "table text-center">
+				<thead class = "thead-dark">
+					<tr>
+						<th scope = "col">BSCALE value</th>
+						<th scope = "col">Calculated BSEL value</th>
+						<th scope = "col">BSEL value</th>
+						<th scope = "col">Real baud rate</th>
+						<th scope = "col">Error [%]</th>
+						<th scope = "col">Abs(Error)  [%]</th>
+					</tr>
+				</thead>
 
-				<div class = "col">
-						BSCALE value
-				</div>
+				<tr>
+					<th class = "bscale" scope = "col">7</th>
+					<th class = "calc-bsel" scope = "col">0</th>
+					<th class = "bsel" scope = "col">0</th>
+					<th class = "baud-rate" scope = "col">0</th>
+					<th class = "error" scope = "col">0</th>
+					<th class = "abs-error" scope = "col">0</th>
+				</tr>
 
-				<div class = "col">
-						BSCALE value
-				</div>
+				<tr>
+					<th scope = "col">6</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+				</tr>
 
-				<div class = "col">
-						BSCALE value
-				</div>
+				<tr>
+					<th scope = "col">5</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+				</tr>
 
+				<tr>
+					<th scope = "col">4</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+				</tr>
 
-			</div>
+				<tr>
+					<th scope = "col">3</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+				</tr>
+
+				<tr>
+					<th scope = "col">2</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+				</tr>
+
+				<tr>
+					<th scope = "col">1</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+					<th scope = "col">0</th>
+				</tr>
+
+			</table>
 
 
 		</div>
-
-		<div class="container">
-  <div class="row">
-    <div class="col">Column</div>
-    <div class="col">Column</div>
-    <div class="w-100"></div>
-    <div class="col">Column</div>
-    <div class="col">Column</div>
-  </div>
-</div>
-
 
 	</body>
 </html>
