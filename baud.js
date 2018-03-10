@@ -38,40 +38,192 @@ Table.prototype.update = function ()
   var baudRate = parseFloat(this.baudRate.value);
   var speedMode = parseFloat(this.speedMode.value);
 
+  if (clockRate <= 0)
+  {
+    this.clockRate.classList.add("is-invalid");
+    return;
+  }
+
+  if (baudRate <= 0)
+  {
+      this.baudRate.classList.add("is-invalid");
+    return;
+  }
+
+  this.baudRate.classList.remove("is-invalid");
+  this.clockRate.classList.remove("is-invalid");
+
+
+
   //get all bscales
   var bscales = document.getElementsByClassName("bscale");
 
   //define length outside of loop for efficiency
   var bscaleLength = bscales.length;
 
+  //set
   for (var index = 0; index < bscaleLength; index++)
   {
     var bscale = bscales[index];
     var parentRow = bscale.parentElement;
 
+    //get bscale value
     var scale = parseFloat(bscale.textContent);
 
+
+    /*
+    * Calculated bsel value
+    */
+
+    //get the calculated bsel value's tag
     var calcBsel = parentRow.querySelector(".calc-bsel");
-    var calcBselValue = clockRate * 1000000/(Math.pow(2, scale) * (16 - 8 * speedMode) * baudRate) - 1;
-    calcBselValue = calcBselValue.toFixed(2);
-    calcBsel.textContent = calcBselValue;
 
-    var bsel = parentRow.querySelector(".bsel");
+    //calculate "calculated" bsel value
 
-    if (calcBselValue > 4095)
+    var calcBselValue
+    if (scale >= 0)
     {
-      bsel.textContent = "N/A";
+      calcBselValue = clockRate * 1000000/(Math.pow(2, scale) * (16 - 8 * speedMode) * baudRate) - 1;
     }
 
     else
     {
-      bsel.textContent = Math.floor(parseFloat(calcBselValue) + 0.5);
+      calcBselValue = 1/(Math.pow(2,scale))*(clockRate * 1000000/((16 - 8 * speedMode) * baudRate) - 1);
     }
 
+    calcBselValue = calcBselValue.toFixed(2);
+    calcBsel.textContent = calcBselValue;
 
+    /*
+    * bsel value
+    */
+
+    //get bsel tag
+    var bsel = parentRow.querySelector(".bsel");
+
+    var bselValue;
+
+    //set bsel
+    if (calcBselValue > 4095)
+    {
+      bselValue = "N/A";
+    }
+
+    else
+    {
+      bselValue = Math.floor(parseFloat(calcBselValue) + 0.5);
+    }
+
+    bsel.textContent = bselValue;
+
+    /*
+    * real baud rate
+    */
+
+    var baud = parentRow.querySelector(".baud-rate");
+    var baudValue;
+
+    if (bselValue == -1 || scale == -7)
+    {
+      baudValue = "No!";
+    }
+
+    else
+    {
+      if (scale >= 0)
+      {
+        baudValue = clockRate * 1000000/(Math.pow(2, scale)*(16 - 8*speedMode)*(bselValue + 1));
+      }
+
+      else
+      {
+        baudValue = clockRate * 1000000/((16 - 8 * speedMode) * ((Math.pow(2, scale)* bselValue) + 1));
+      }
+
+      if (isNaN(baudValue) || !isFinite(baudValue))
+      {
+        baudValue = "No!";
+      }
+
+      else
+      {
+        baudValue = baudValue.toFixed(0);
+      }
+    }
+
+    baud.textContent = baudValue;
+
+    /*
+    * Error [%]
+    */
+
+    var error = parentRow.querySelector(".error");
+
+    var percentError;
+
+    if (baudValue == "No!")
+    {
+      percentError = "N/A";
+    }
+
+    else
+    {
+      percentError = 100 - baudValue/baudRate*100;
+      percentError = percentError.toFixed(2);
+    }
+
+    error.textContent = percentError;
+
+    /*
+    * abs(Error) [%]
+    */
+
+    var absErrorTag = parentRow.querySelector(".abs-error");
+
+    var absError;
+
+    if (baudValue == "No!")
+    {
+      absError = "N/A";
+    }
+
+    else
+    {
+      absError = Math.abs(percentError);
+      absError = absError.toFixed(2);
+    }
+
+    absErrorTag.textContent = absError;
+
+    var colorClass;
+
+
+    if (absError > 6 || absError == "N/A")
+    {
+      //red
+      colorClass = "bg-danger";
+    }
+
+    else if (absError > 3)
+    {
+      //yellow
+      colorClass = "bg-warning";
+    }
+
+    else
+    {
+      //green
+      colorClass = "bg-success";
+    }
+
+    //remove any previous colors
+    absErrorTag.classList.remove("bg-danger");
+    absErrorTag.classList.remove("bg-warning");
+    absErrorTag.classList.remove("bg-success");
+
+    absErrorTag.classList.add(colorClass);
   }
-};
 
-
+}
 
 document.addEventListener("DOMContentLoaded", intalizeTable);
