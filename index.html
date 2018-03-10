@@ -6,12 +6,13 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+		<link rel = "icon" href = "favicon.ico" type = "image/x-icon" />
 		<script src="baud.js"></script>
 	</head>
 
 	<body>
 
-		<h1 class = "text-center">Baud Rate Calculator</h1>
+		<h1 style = "margin-bottom: 50px;"class = "text-center">Baud Rate Calculator</h1>
 
 		<div class = "container">
 			<div class = "row">
@@ -21,7 +22,10 @@
     				<span class = "input-group-text">CPU Clock (MHz)</span>
   				</div>
 
-					<input type = "number" class = "form-control" value = "32" id = "clock-rate"/>
+					<input type = "number" class = "form-control" min = "0" max = "100" value = "32" id = "clock-rate"/>
+					<div class="invalid-feedback">
+          	Your clock rate must be greater than 0!
+        	</div>
 				</div>
 
 
@@ -31,6 +35,9 @@
 					</div>
 
 					<input type = "number" class = "form-control" value = "128000" id = "baud-rate"/>
+					<div class="invalid-feedback">
+          	Your baud rate must be greater than 0!
+        	</div>
 				</div>
 
 				<div class = "input-group mb-3">
@@ -39,91 +46,175 @@
 					</div>
 					<select class = "form-control" id = "speed-mode">
 						<option value = "0" selected >Normal (0)</option>
-						<optio value = "1" >Double (1)</option>
+						<option value = "1" >Double (1)</option>
 					</select>
 				</div>
 
 			</div>
 
-			<table class = "table text-center">
-				<thead class = "thead-dark">
+			<div class = "row">
+				<table class = "table text-center">
+					<thead class = "thead-dark">
+						<tr>
+							<th scope = "col">BSCALE value</th>
+							<th scope = "col">Calculated BSEL value</th>
+							<th scope = "col">BSEL value</th>
+							<th scope = "col">Real baud rate</th>
+							<th scope = "col">Error [%]</th>
+							<th scope = "col">Abs(Error)  [%]</th>
+						</tr>
+					</thead>
+
 					<tr>
-						<th scope = "col">BSCALE value</th>
-						<th scope = "col">Calculated BSEL value</th>
-						<th scope = "col">BSEL value</th>
-						<th scope = "col">Real baud rate</th>
-						<th scope = "col">Error [%]</th>
-						<th scope = "col">Abs(Error)  [%]</th>
+						<th class = "bscale" scope = "col">7</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
 					</tr>
-				</thead>
 
-				<tr>
-					<th class = "bscale" scope = "col">7</th>
-					<th class = "calc-bsel" scope = "col">0</th>
-					<th class = "bsel" scope = "col">0</th>
-					<th class = "baud-rate" scope = "col">0</th>
-					<th class = "error" scope = "col">0</th>
-					<th class = "abs-error" scope = "col">0</th>
-				</tr>
+					<tr>
+						<th class = "bscale" scope = "col">6</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
 
-				<tr>
-					<th scope = "col">6</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-				</tr>
+					<tr>
+						<th class = "bscale" scope = "col">5</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
 
-				<tr>
-					<th scope = "col">5</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-				</tr>
+					<tr>
+						<th class = "bscale" scope = "col">4</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
 
-				<tr>
-					<th scope = "col">4</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-				</tr>
+					<tr>
+						<th class = "bscale" scope = "col">3</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
 
-				<tr>
-					<th scope = "col">3</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-				</tr>
+					<tr>
+						<th class = "bscale" scope = "col">2</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
 
-				<tr>
-					<th scope = "col">2</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-				</tr>
+					<tr>
+						<th class = "bscale" scope = "col">1</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
 
-				<tr>
-					<th scope = "col">1</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-					<th scope = "col">0</th>
-				</tr>
+					<tr>
+						<th class = "bscale" scope = "col">0</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
 
-			</table>
+					<tr>
+						<th class = "bscale" scope = "col">-1</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
 
+					<tr>
+						<th class = "bscale" scope = "col">-2</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
 
+					<tr>
+						<th class = "bscale" scope = "col">-3</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
+
+					<tr>
+						<th class = "bscale" scope = "col">-4</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
+
+					<tr>
+						<th class = "bscale" scope = "col">-5</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
+
+					<tr>
+						<th class = "bscale" scope = "col">-6</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
+
+					<tr>
+						<th class = "bscale" scope = "col">-7</th>
+						<th class = "calc-bsel" scope = "col">0</th>
+						<th class = "bsel" scope = "col">0</th>
+						<th class = "baud-rate" scope = "col">0</th>
+						<th class = "error" scope = "col">0</th>
+						<th class = "abs-error" scope = "col">0</th>
+					</tr>
+
+				</table>
+			</div>
+
+			<h3 class = "text-center" style = "margin-top: 50px;">Applied Equations</h3>
+			<div class = "row">
+				<img class = "rounded mx-auto d-block" src = "equations.png">
+			</div>
 		</div>
 
 	</body>
+
+	<footer class = "bd-footer text-center">
+		<div class = "container-fluid p-3">
+			<p>Designed by <a href = "https://github.com/Seth10001">Raymond</a> based on Dr. Schwartz's excel baud rate calculator.</p>
+		</div>
+	</footer>
+
 </html>
