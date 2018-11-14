@@ -123,7 +123,7 @@ Table.prototype.update = function ()
     var baud = parentRow.querySelector(".baud-rate");
     var baudValue;
 
-    if (bselValue == -1 || scale == -7)
+    if (bselValue == -1)
     {
       baudValue = "No!";
     }
